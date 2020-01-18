@@ -1,0 +1,6 @@
+def sum: Int(a: Int, b: Int){
+    return a + b
+}
+
+int a = 1
+readInt()
