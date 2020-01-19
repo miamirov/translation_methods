@@ -29,6 +29,12 @@ def tokens_generator(s):
         if ch == '*':
             yield Token('*', Tokens.ASTERISK)
             continue
+        if ch == ']':
+            yield Token(']', Tokens.RIGHT_BRACK)
+            continue
+        if ch == '[':
+            yield Token('[', Tokens.LEFT_BRACK)
+            continue
         raise ParseException('Unknown character {} in position'.format(ch))
     if buf:
         yield Token(''.join(buf), Tokens.NAME)

@@ -49,12 +49,22 @@ class Parser:
             children = [
                 self.take_t(),
                 self.take_name(),
+                self.take_arr(),
                 self.take_a_(),
             ]
         else:
             self.unexpected_token()
         return Node('A', children)
-
+    def take_arr(self):
+        print(str(self.cur_token))
+        if self.cur_token.type == Tokens.LEFT_BRACK:
+            children = [
+                self.take_token(Tokens.LEFT_BRACK),
+                self.take_token(Tokens.RIGHT_BRACK)
+            ]
+        else:
+            children = [Node('eps')]
+        return Node('Arr', children)
     def take_a_(self):
         if self.cur_token.type == Tokens.RIGHT_PARENTHESIS:
             children = [Node('eps')]
@@ -63,7 +73,8 @@ class Parser:
                 self.take_token(Tokens.COMMA),
                 self.take_t(),
                 self.take_name(),
-                self.take_a_(),
+                self.take_arr(),
+                self.take_a_()   
             ]
         else:
             self.unexpected_token()
