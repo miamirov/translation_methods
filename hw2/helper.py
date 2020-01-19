@@ -18,6 +18,8 @@ class Tokens(Enum):
     COMMA = 5
     ASTERISK = 6
     EOF = 7
+    LEFT_BRACK = 8
+    RIGHT_BRACK = 9
 
 
 class ParseException(Exception):

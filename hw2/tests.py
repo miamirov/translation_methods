@@ -7,12 +7,12 @@ bad_tests = [
 ]
 
 good_tests = [
-    'int main(int argc, char** argv);',
+    'int main(int argc[], char** argv);',
     'void f();',
     'int f(char* a);',
     'int f(char ** a);',
     'int f(type * * * name);',
-    'int f(x a, y b, z c);',
+    'int f(x a, y b[], z c[]);',
 ]
 
 
