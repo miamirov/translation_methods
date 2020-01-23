@@ -41,6 +41,8 @@ L_BRACK: '[';
 SEMICOLON: ';';
 COLON: ':';
 STRING_: '"' [a-zA-Z_0-9]+ '"';
+READ: 'read';
+WRITE: 'write';
 ID: [a-zA-Z_]+;
 NUM: [0-9]+;
 COMMA: ',';
@@ -83,8 +85,11 @@ local_statement
     | var_def SEMICOLON
     | if_statement
     | cycle
+    | assigment_statement SEMICOLON
     | exp SEMICOLON
     | RETURN exp SEMICOLON
+    | read_ SEMICOLON
+    | write_ SEMICOLON
     | RETURN SEMICOLON;
 
 function_call:
@@ -143,50 +148,34 @@ atom
     | ID array_type;
 
 exp
-    :exp ASSIGN p0
-    |p0;
+    :p;
 
-p0
-    :p0 OR p1
-    |p1;
+p
+    :p OR q
+    |p AND q
+    | p EQ q
+    | p NON_EQ q
+    | p LOWER_EQ q
+    | p GREATER_EQ q
+    | p LOWER q
+    | p GREATER q
+    | p PLUS q
+    | p MINUS q
+    | p MUL q
+    | p DIV q
+    | p MOD q
+    | PLUS q
+    | MINUS q
+    | NOT q
+    | q;
 
-
-p1
-    :p1 AND p2
-    |p2;
-
-p2
-    : p2 EQ p3
-    | p2 NON_EQ p3
-    | p2 LOWER_EQ p3
-    | p2 GREATER_EQ p3
-    | p2 LOWER p3
-    | p2 GREATER p3
-    | p3;
-
-p3
-    : p3 PLUS p4
-    | p3 MINUS p4
-    | p4;
-
-p4
-    : p4 MUL p5
-    | p4 DIV p5
-    | p4 MOD p5
-    | p5;
-
-p5
-   : PLUS p6
-   | MINUS p6
-   | NOT p6
-   | p6;
-
-p6
+q
     : L_PAR exp R_PAR
-    | ID
+    | atom
     | NUM
     | FALSE
     | function_call
-    | ID array_type
     | STRING_;
 
+read_: READ L_PAR atom COLON basic_type R_PAR;
+write_: WRITE L_PAR atom COLON basic_type R_PAR;

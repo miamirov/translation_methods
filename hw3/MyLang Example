@@ -1,6 +1,7 @@
-def sum: Int(a: Int, b: Int){
-    return a + b
+def sum(a: int, b: int): int{
+    a := a + b + c * (c mod d);
+    c: int;
+    read(c: int);
+    return a + b;
 }
 
-int a = 1
-readInt()
