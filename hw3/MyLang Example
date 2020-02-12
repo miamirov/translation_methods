@@ -1,7 +1,38 @@
-def sum(a: int, b: int): int{
-    a := a + b + c * (c mod d);
-    c: int;
-    read(c: int);
-    return a + b;
+def qsort(a: Int[], l: Int, r: Int){
+    if (r > l) {
+        x: Int = a[r]
+        b: Int = l
+        for (i: Int = l; i < r; i = i + 1) {
+            if (a[i] < x) {
+                t: Int = a[i]
+                a[i] = a[b]
+                a[b] = t
+                b = b + 1
+
+            }
+        }
+        t: Int = a[r]
+        a[r] = a[b]
+        a[b] = t
+        qsort(a, b+1, r)
+        qsort(a, l, b-1)
+     }
+
+
+
 }
 
+
+def main(){
+   n: Int
+   read(n: Int)
+   a: Int[n]
+   for (i: Int = 0; i < n;i = i + 1){
+        read(a[i]: Int)
+   }
+   qsort(a, 0, n-1)
+   for (i: Int = 0;i < n; i = i + 1){
+        write(a[i]: Int)
+   }
+
+}

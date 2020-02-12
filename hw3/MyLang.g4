@@ -7,14 +7,14 @@ LOWER_EQ: '<=';
 GREATER_EQ: '>=';
 TRUE: 'true';
 FALSE: 'false';
-INT: 'int';
-DOUBLE: 'double';
-FLOAT: 'float';
-STRING: 'string';
-LONG: 'long';
-CHAR: 'char';
-BOOL: 'bool';
-VOID: 'void';
+INT: 'Int';
+DOUBLE: 'Double';
+FLOAT: 'Float';
+STRING: 'String';
+LONG: 'Long';
+CHAR: 'Char';
+BOOL: 'Boolean';
+VOID: 'Void';
 RETURN: 'return';
 IF: 'if';
 ELSE: 'else';
@@ -29,7 +29,7 @@ AND: 'and';
 NOT: 'not';
 LOWER: '<';
 GREATER: '>';
-ASSIGN: ':=';
+ASSIGN: '=';
 R_PAR: ')';
 L_PAR: '(';
 L_BRACE: '{';
@@ -55,17 +55,16 @@ code
     |;
 
 global_statement
-    : var_decl SEMICOLON
-    | var_def SEMICOLON
-    | function
-    | function_call;
+    : var_decl
+    | var_def
+    | function;
 
 var_decl: ID COLON type_;
 
 var_def: ID COLON type_ ASSIGN exp;
 
 function:
-   DEF ID L_PAR function_args R_PAR COLON returned_type L_BRACE
+   DEF ID L_PAR function_args R_PAR returned_type L_BRACE
    body R_BRACE;
 
 function_args
@@ -73,7 +72,7 @@ function_args
     |;
 
 function_args_
-    : COMMA ID COLON type_
+    : COMMA ID COLON type_ function_args_
     |;
 
 body
@@ -81,16 +80,20 @@ body
     |;
 
 local_statement
-    : var_decl SEMICOLON
-    | var_def SEMICOLON
+    : var_decl
+    | var_def
     | if_statement
     | cycle
-    | assigment_statement SEMICOLON
-    | exp SEMICOLON
-    | RETURN exp SEMICOLON
-    | read_ SEMICOLON
-    | write_ SEMICOLON
-    | RETURN SEMICOLON;
+    | exp
+    | returned
+    | while_statement
+    | for_statement
+    | read_
+    | write_;
+
+returned
+    :RETURN exp
+    |RETURN;
 
 function_call:
     ID L_PAR exp_list R_PAR;
@@ -109,7 +112,7 @@ cycle
 
 for_statement:
     FOR L_PAR var_def SEMICOLON exp SEMICOLON exp R_PAR L_BRACE
-    body L_BRACE;
+    body R_BRACE;
 
 while_statement:
     WHILE L_PAR exp R_PAR L_BRACE
@@ -126,6 +129,7 @@ type_
 
 array_type
     : L_BRACK exp R_BRACK array_type
+    | L_BRACK R_BRACK array_type
     |;
 
 
@@ -138,8 +142,8 @@ basic_type
     |BOOL;
 
 returned_type
-    :basic_type
-    |VOID;
+    :COLON basic_type
+    |;
 
 assigment_statement: atom ASSIGN exp;
 
@@ -174,8 +178,10 @@ q
     | atom
     | NUM
     | FALSE
+    | TRUE
     | function_call
-    | STRING_;
+    | STRING_
+    | assigment_statement;
 
 read_: READ L_PAR atom COLON basic_type R_PAR;
 write_: WRITE L_PAR atom COLON basic_type R_PAR;
